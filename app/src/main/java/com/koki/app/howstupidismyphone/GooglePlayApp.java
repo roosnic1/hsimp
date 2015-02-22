@@ -32,14 +32,14 @@ public class GooglePlayApp implements Serializable {
         this.reviews = reviews;
     }
 
-    public GooglePlayApp(String packageId, String appName, String category, String playUrl, double score, ArrayList<String> reviews) {
+    public GooglePlayApp(String packageId, String appName, String category, String playUrl, double score) {
         this.packageId = packageId;
         this.appName = appName;
         this.category = category;
         this.playUrl = playUrl;
         this.score = score;
         this.logo = null;
-        this.reviews = reviews;
+        this.reviews = new ArrayList<>();
     }
 
 
@@ -108,5 +108,18 @@ public class GooglePlayApp implements Serializable {
             this.reviews = new ArrayList<String>();
         }
         this.reviews.add(review);
+    }
+
+    @Override
+    public String toString() {
+        return "GooglePlayApp{" +
+                "packageId='" + packageId + '\'' +
+                ", appName='" + appName + '\'' +
+                ", category='" + category + '\'' +
+                ", playUrl='" + playUrl + '\'' +
+                ", score=" + score +
+                ", logo=" + logo +
+                ", reviews=" + reviews +
+                '}';
     }
 }
