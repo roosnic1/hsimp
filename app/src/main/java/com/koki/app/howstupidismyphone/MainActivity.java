@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -18,6 +23,10 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends ActionBarActivity implements IAppdataLoaderCallback {
 
     private final static String TAG = "MainActivity";
+    
+    private Button bnStart;
+    private ProgressBar pgLoading;
+    private TextView tvScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +34,19 @@ public class MainActivity extends ActionBarActivity implements IAppdataLoaderCal
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
-        getAllInstalledApps();
+        bnStart = (Button) findViewById(R.id.bnStart);
+        pgLoading = (ProgressBar) findViewById(R.id.pgLoading);
+        tvScore = (TextView) findViewById(R.id.tvScore);
+
+        bnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAllInstalledApps();
+            }
+        });
+
+        pgLoading.setIndeterminate(false);
+        //getAllInstalledApps();
     }
 
 
@@ -79,6 +100,8 @@ public class MainActivity extends ActionBarActivity implements IAppdataLoaderCal
             totalScore += playApps.get(i).getScore();
         }
         totalScore = totalScore / playApps.size();
+
+        tvScore.setText("Your Score is : " + totalScore);
 
     }
 
