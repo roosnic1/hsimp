@@ -15,7 +15,7 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements IAppdataLoaderCallback {
 
     private final static String TAG = "MainActivity";
 
@@ -60,11 +60,37 @@ public class MainActivity extends ActionBarActivity {
         ArrayList<String> appList = new ArrayList<>();
 
         for(int i=0;i<pkgAppsList.size();i++) {
+        //for(int i=0;i<10;i++) {
             appList.add(pkgAppsList.get(i).activityInfo.packageName);
             //Log.i(TAG,"App: " + pkgAppsList.get(i).activityInfo.packageName);
             //Log.i(TAG,"App: " + pkgAppsList.get(i).filter.toString());
         }
+        AppdataLoader appdataLoader = new AppdataLoader(this,this);
+        appdataLoader.load(appList);
+        //Log.i(TAG,"All Apps: " + appList.toString());
+    }
 
-        Log.i(TAG,"All Apps: " + appList.toString());
+
+    @Override
+    public void success(ArrayList<GooglePlayApp> playApps) {
+        Log.i(TAG,playApps.toString());
+        double totalScore = 0;
+        for(int i=0;i<playApps.size();i++) {
+            totalScore += playApps.get(i).getScore();
+        }
+        totalScore = totalScore / playApps.size();
+
+    }
+
+    @Override
+    public void onProgress(int total, int done) {
+        Log.i(TAG,"Done " + done + " of " + total);
+        pgLoading.setMax(total);
+        pgLoading.setProgress(done);
+    }
+
+    @Override
+    public void failure(LoaderError error) {
+        Log.i(TAG,"Error :" + error.toString());
     }
 }
